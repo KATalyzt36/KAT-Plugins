@@ -11,3 +11,6 @@
 
 ## Extra:
 I have added a RuneLite launcher for IntelliJ via Gradle so that you don't have to configure it yourself. You can use it if you like; it's also customizable in build.gradle :)
+
+
+Repository created - 11 July of 2024. Enjoy it! :)
