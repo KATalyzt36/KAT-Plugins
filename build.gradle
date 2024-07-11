@@ -75,12 +75,12 @@ task runRL(type: JavaExec) {
     workingDir = file('/home/user/IdeaProjects/KAT-Plugins')
 }
 
-task KATPluginsNoApi(type: Jar) {
+task AllKATPluginsNoEthanAPI(type: Jar) {
     group = 'Export/Compile'
     description = 'KATPluginsNoApi to JAR file'
     manifest {
     }
-    baseName = 'KATPlugins'
+    baseName = 'AllKATPluginsNoEthanAPI'
     exclude("com/example")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
