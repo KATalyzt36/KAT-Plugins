@@ -12,7 +12,8 @@ repositories {
     jcenter()
 }
 
-def runeLiteVersion = '1.10.34-SNAPSHOT'
+def runeLiteVersion = 'latest.release'
+//def runeLiteVersion = '1.10.34'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
@@ -37,7 +38,7 @@ sourceSets {
 }
 
 group = 'com.example'
-version = '5.4'
+version = 'v1.0.0'
 sourceCompatibility = "11"
 targetCompatibility = "11"
 
@@ -45,7 +46,7 @@ task FatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.example.Main'
     }
-    baseName = 'EthanVannPlugins'
+    baseName = 'KATPlugins'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude("com/example/hidden")
@@ -57,7 +58,72 @@ task FatJarWithHidden(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.example.Main'
     }
-    baseName = 'EthanVannPlugins'
+    baseName = 'KATPluginsWithHidden'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task runRL(type: JavaExec) {
+    group = 'Useful'
+    description = 'Run Lite with Gradle'
+
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.example.Runner'
+    jvmArgs = ['-ea', '-Duser.home=/home/user/IdeaProjects/KATPlugins/RL'] // Second parameter is to create an Developer instance of .runelite
+    args = ['--developer-mode']
+    workingDir = file('/home/user/IdeaProjects/KAT-Plugins')
+}
+
+task KATPluginsNoApi(type: Jar) {
+    group = 'Export/Compile'
+    description = 'KATPluginsNoApi to JAR file'
+    manifest {
+    }
+    baseName = 'KATPlugins'
+    exclude("com/example")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task katapi(type: Jar) {
+    group = 'Export/Compile'
+    description = 'katapi to JAR file'
+    manifest {
+    }
+    baseName = 'katapi'
+    exclude("com.example")
+    exclude("net.kat.inventoryids")
+    exclude("net.kat.spell2key")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task inventoryIDs(type: Jar) {
+    group = 'Export/Compile'
+    description = 'inventoryIDs to JAR file'
+    manifest {
+    }
+    baseName = 'inventoryIDs'
+    exclude("com.example")
+    exclude("net.kat.katapi")
+    exclude("net.kat.spell2key")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task spell2key(type: Jar) {
+    group = 'Export/Compile'
+    description = 'spell2key to JAR file'
+    manifest {
+    }
+    baseName = 'spell2key'
+    exclude("com.example")
+    exclude("net.kat.katapi")
+    exclude("net.kat.invetoryids")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
