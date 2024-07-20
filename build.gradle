@@ -70,7 +70,7 @@ task runRL(type: JavaExec) {
 
     classpath = sourceSets.test.runtimeClasspath
     main = 'com.example.Runner'
-    jvmArgs = ['-ea', '-Duser.home=/home/user/IdeaProjects/KATPlugins/RL'] // Second parameter is to create an Developer instance of .runelite
+    jvmArgs = ['-ea', '-Duser.home=/home/user/IdeaProjects/KAT-Plugins/RL'] // Second parameter is to create an Developer instance of .runelite
     args = ['--developer-mode']
     workingDir = file('/home/user/IdeaProjects/KAT-Plugins')
 }
