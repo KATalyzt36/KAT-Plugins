@@ -38,7 +38,7 @@ sourceSets {
 }
 
 group = 'com.example'
-version = 'v1.0.0'
+version = 'v1.1.0'
 sourceCompatibility = "11"
 targetCompatibility = "11"
 
