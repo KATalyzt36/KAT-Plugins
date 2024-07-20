@@ -1,4 +1,4 @@
-package net.kat.spell2key;
+package net.kat.utilities.spell2key;
 
 import net.runelite.client.config.*;
 

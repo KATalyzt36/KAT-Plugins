@@ -2,9 +2,9 @@ package com.example;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.PacketUtilsPlugin;
-import net.kat.inventoryids.InventoryIdsPlugin;
-import net.kat.katapi.KATapi;
-import net.kat.spell2key.Spell2KeyPlugin;
+import net.kat.utilities.inventoryids.InventoryIdsPlugin;
+import net.kat.api.KATapi;
+import net.kat.utilities.spell2key.Spell2KeyPlugin;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 

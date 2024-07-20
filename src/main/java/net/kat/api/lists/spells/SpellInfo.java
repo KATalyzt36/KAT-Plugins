@@ -1,4 +1,4 @@
-package net.kat.katapi.lists.spells;
+package net.kat.api.lists.spells;
 
 import com.example.PacketUtils.WidgetInfoExtended;
 import lombok.Getter;

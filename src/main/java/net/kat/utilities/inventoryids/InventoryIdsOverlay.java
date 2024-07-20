@@ -1,4 +1,4 @@
-package net.kat.inventoryids;
+package net.kat.utilities.inventoryids;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;

@@ -1,7 +1,7 @@
-package net.kat.spell2key;
+package net.kat.utilities.spell2key;
 
-import net.kat.katapi.KATapi;
-import net.kat.katapi.lists.spells.SpellInfo;
+import net.kat.api.KATapi;
+import net.kat.api.lists.spells.SpellInfo;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.PacketUtilsPlugin;
@@ -9,6 +9,7 @@ import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.kat.utilities.spell2key.state.Spell2Cast;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
@@ -79,9 +80,8 @@ public class Spell2KeyPlugin extends Plugin {
     private ClientToolbar clientToolbar;
     @Inject
     private MouseManager mouseManager;
-
-    private boolean allBloodKeysPressed = false;
-    private boolean allIceKeysPressed = false;
+    
+    private Spell2Cast spell2Cast = Spell2Cast.NONE;
 
     @Provides
     Spell2KeyConfig provideConfig(ConfigManager configManager)
@@ -95,8 +95,7 @@ public class Spell2KeyPlugin extends Plugin {
     @Override
     protected void startUp()
     {
-        allBloodKeysPressed = false;
-        allIceKeysPressed = false;
+        spell2Cast = Spell2Cast.NONE;
 
         keyManager.registerKeyListener(bloodHotkeyListener);
         keyManager.registerKeyListener(iceHotkeyListener);
@@ -107,8 +106,7 @@ public class Spell2KeyPlugin extends Plugin {
     @Override
     protected void shutDown()
     {
-        allBloodKeysPressed = false;
-        allIceKeysPressed = false;
+        spell2Cast = Spell2Cast.NONE;
 
         keyManager.unregisterKeyListener(bloodHotkeyListener);
         keyManager.unregisterKeyListener(iceHotkeyListener);
@@ -122,25 +120,27 @@ public class Spell2KeyPlugin extends Plugin {
             return;
         }
         if (menuEntryAdded.getOption().equals("Attack")){
-            if (!allBloodKeysPressed && !allIceKeysPressed)
+            if (spell2Cast == Spell2Cast.NONE)
             {
                 return;
             }
             Optional<NPC> npc = NPCs.search().alive().withId(
                     Objects.requireNonNull(menuEntryAdded.getMenuEntry().getNpc()).getId()
-            ).first();
+            ).nearestToPoint(
+                    Objects.requireNonNull(menuEntryAdded.getMenuEntry().getNpc()).getWorldLocation()
+            );
             if (npc.isEmpty())
             {
                 KATapi.sendGameMessage("NPC EMPTY");
                 return;
             }
-            if (allBloodKeysPressed){
+            if (spell2Cast == Spell2Cast.BLOOD_BARRAGE){
                 KATapi.castSpell(SpellInfo.BLOOD_BARRAGE,npc);
-                allBloodKeysPressed = false;
+                spell2Cast = Spell2Cast.NONE;
                 return;
-            } else if (allIceKeysPressed){
+            } else if (spell2Cast == Spell2Cast.ICE_BARRAGE){
                 KATapi.castSpell(SpellInfo.ICE_BARRAGE,npc);
-                allIceKeysPressed = false;
+                spell2Cast = Spell2Cast.NONE;
                 return;
             }
             return;
@@ -201,10 +201,10 @@ public class Spell2KeyPlugin extends Plugin {
         @Override
         public MouseEvent mousePressed(MouseEvent mouseEvent) {
             if (bloodTrigger && SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                allBloodKeysPressed = true;
+                spell2Cast = Spell2Cast.BLOOD_BARRAGE;
                 mouseEvent.consume();
             } else if (iceTrigger && SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                allIceKeysPressed = true;
+                spell2Cast = Spell2Cast.ICE_BARRAGE;
                 mouseEvent.consume();
             }
             return mouseEvent;
@@ -212,8 +212,7 @@ public class Spell2KeyPlugin extends Plugin {
 
         @Override
         public MouseEvent mouseReleased(MouseEvent mouseEvent) {
-            allBloodKeysPressed = false;
-            allIceKeysPressed = false;
+            spell2Cast = Spell2Cast.NONE;
             return mouseEvent;
         }
 

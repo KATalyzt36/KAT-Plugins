@@ -1,6 +1,6 @@
-package net.kat.katapi;
+package net.kat.api;
 
-import net.kat.katapi.lists.spells.SpellInfo;
+import net.kat.api.lists.spells.SpellInfo;
 import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.PacketUtilsPlugin;

@@ -1,4 +1,4 @@
-package net.kat.inventoryids;
+package net.kat.utilities.inventoryids;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import net.runelite.client.plugins.Plugin;

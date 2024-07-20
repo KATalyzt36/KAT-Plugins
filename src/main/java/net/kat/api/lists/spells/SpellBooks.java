@@ -1,4 +1,4 @@
-package net.kat.katapi.lists.spells;
+package net.kat.api.lists.spells;
 public class SpellBooks {
     public static int STANDARD = 0;
     public static int ANCIENT = 1;
