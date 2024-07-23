@@ -217,18 +217,49 @@ public class EthanApiPlugin extends Plugin {
 
     @SneakyThrows
     public static HeadIcon getHeadIcon(NPC npc) {
-        Method getHeadIconMethod = null;
+        Field vi = npc.getClass().getDeclaredField("ap");
+        vi.setAccessible(true);
+        Object viObj = vi.get(npc);
+        if(viObj==null){
+            vi.setAccessible(false);
+            return getOldHeadIcon(npc);
+        }
+        Field adField = viObj.getClass().getDeclaredField("ad");
+        adField.setAccessible(true);
+        short[] ad = (short[]) adField.get(viObj);
+        adField.setAccessible(false);
+        vi.setAccessible(false);
+        if(ad==null){
+            return getOldHeadIcon(npc);
+        }
+        if(ad.length==0){
+            return getOldHeadIcon(npc);
+        }
+        short headIcon  = ad[0];
+        if(headIcon==-1){
+            return getOldHeadIcon(npc);
+        }
+        return HeadIcon.values()[headIcon];
+    }
+
+    @SneakyThrows
+    public static HeadIcon getOldHeadIcon(NPC npc){
+                Method getHeadIconMethod = null;
         for (Method declaredMethod : npc.getComposition().getClass().getDeclaredMethods()) {
             if (declaredMethod.getName().length() == 2 && declaredMethod.getReturnType() == short.class && declaredMethod.getParameterCount() == 1) {
                 getHeadIconMethod = declaredMethod;
                 getHeadIconMethod.setAccessible(true);
-                short headIcon = (short) getHeadIconMethod.invoke(npc.getComposition(), 0);
+                short headIcon = -1;
+                try {
+                    headIcon = (short) getHeadIconMethod.invoke(npc.getComposition(), 0);
+                }catch (Exception e){
+                    //nothing
+                }
                 getHeadIconMethod.setAccessible(false);
 
                 if (headIcon == -1) {
                     continue;
                 }
-
                 return HeadIcon.values()[headIcon];
             }
         }
@@ -417,6 +448,7 @@ public class EthanApiPlugin extends Plugin {
         return null;
     }
 
+    @Deprecated // use client menuAction
     @SneakyThrows
     public static void invoke(int var0, int var1, int var2, int var3, int var4,int var5, String var6, String var7, int var8,
                               int var9) {
@@ -426,23 +458,22 @@ public class EthanApiPlugin extends Plugin {
             ClassLoader classLoader = client.getClass().getClassLoader();
             Vector<Class<?>> classesVector = (Vector<Class<?>>) classes.get(classLoader);
             Class<?>[] params = new Class[]{int.class, int.class, int.class, int.class, int.class, int.class, String.class, String.class, int.class, int.class};
-            for (Class<?> aClass : classesVector) {
-                if (doAction != null) {
-                    break;
-                }
-                for (Method declaredMethod : aClass.getDeclaredMethods()) {
-                    if (declaredMethod.getParameterCount() != 11) {
+            for (int i = 0; i < classesVector.size(); i++) {
+                try {
+                    if (classesVector.get(i).getSuperclass()!=null&&classesVector.get(i).getSuperclass().getName().contains("SSLSocketFactory")) {
                         continue;
                     }
-                    if (declaredMethod.getReturnType() != void.class) {
-                        continue;
+                    try {
+                        for (int i1 = 0; i1 < classesVector.get(i).getDeclaredMethods().length; i1++) {
+                            if (!Arrays.equals(Arrays.copyOfRange(classesVector.get(i).getDeclaredMethods()[i1].getParameterTypes(), 0, 10), params)) {
+                                continue;
+                            }
+                            doAction = classesVector.get(i).getDeclaredMethods()[i1];
+                        }
+                    } catch (NoClassDefFoundError ignored) {
+
                     }
-                    if (!Arrays.equals(Arrays.copyOfRange(declaredMethod.getParameterTypes(), 0, 10), params)) {
-                        continue;
-                    }
-                    doAction = declaredMethod;
-                    System.out.println(doAction);
-                    break;
+                } catch (Exception ignored) {
                 }
             }
         }
