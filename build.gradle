@@ -94,7 +94,7 @@ task AllKATPluginsNoAPIs(type: Jar) {
     }
     baseName = 'AllKATPluginsNoAPIs'
     exclude("com/example")
-    exclude("net.kat.api")
+    exclude("net/kat/api")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -106,10 +106,10 @@ task katapi(type: Jar) {
     manifest {
     }
     baseName = 'katapi'
-    exclude("com.example")
-    exclude("net.kat.utilities.inventoryids")
-    exclude("net.kat.utilities.spell2key")
-    exclude("net.kat.utilities.neverlog")
+    exclude("com/example")
+    exclude("net/kat/utilities/inventoryids")
+    exclude("net/kat/utilities/spell2key")
+    exclude("net/kat/utilities/neverlog")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -121,10 +121,10 @@ task inventoryIDs(type: Jar) {
     manifest {
     }
     baseName = 'inventoryIDs'
-    exclude("com.example")
-    exclude("net.kat.api")
-    exclude("net.kat.utilities.spell2key")
-    exclude("net.kat.utilities.neverlog")
+    exclude("com/example")
+    exclude("net/kat/api")
+    exclude("net/kat/utilities/spell2key")
+    exclude("net/kat/utilities/neverlog")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -136,10 +136,10 @@ task spell2key(type: Jar) {
     manifest {
     }
     baseName = 'spell2key'
-    exclude("com.example")
-    exclude("net.kat.api")
-    exclude("net.kat.utilities.inventoryids")
-    exclude("net.kat.utilities.neverlog")
+    exclude("com/example")
+    exclude("net/kat/api")
+    exclude("net/kat/utilities/inventoryids")
+    exclude("net/kat/utilities/neverlog")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -151,10 +151,10 @@ task neverlog(type: Jar) {
     manifest {
     }
     baseName = 'neverlog'
-    exclude("com.example")
-    exclude("net.kat.api")
-    exclude("net.kat.utilities.inventoryids")
-    exclude("net.kat.utilities.spell2key")
+    exclude("com/example")
+    exclude("net/kat/api")
+    exclude("net/kat/utilities/inventoryids")
+    exclude("net/kat/utilities/spell2key")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
